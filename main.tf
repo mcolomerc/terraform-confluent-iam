@@ -1,0 +1,47 @@
+
+data "confluent_environment" "main" {
+  id = var.environment
+}
+
+data "confluent_kafka_cluster" "cluster" {
+  id = var.cluster
+  environment {
+    id = data.confluent_environment.main.id
+  }
+}
+
+resource "confluent_service_account" "sa" {
+  display_name = var.service_account.name
+  description  = var.service_account.description
+} 
+
+resource "confluent_api_key" "service-account-kafka-api-key" {
+  display_name = "${var.service_account.name}-kafka-api-key"
+  description  = "Kafka API Key that is owned by ${var.service_account.name} service account"
+  owner {
+    id          = confluent_service_account.sa.id
+    api_version = confluent_service_account.sa.api_version
+    kind        = confluent_service_account.sa.kind
+  }
+
+  managed_resource {
+    id          = data.confluent_kafka_cluster.cluster.id
+    api_version = data.confluent_kafka_cluster.cluster.api_version
+    kind        = data.confluent_kafka_cluster.cluster.kind
+
+    environment {
+      id = data.confluent_environment.main.id
+    }
+  }
+} 
+
+resource "confluent_role_binding" "cluster_resource_rbac" {
+  for_each = toset(var.sa_role_bindings)
+  principal   = "User:${confluent_service_account.sa.id}"
+  role_name   = each.value.role
+  crn_pattern = "${data.confluent_kafka_cluster.cluster.rbac_crn}/kafka=${data.confluent_kafka_cluster.cluster.id}/${each.value.resource}=${each.value.name}"
+}
+
+
+
+ 
