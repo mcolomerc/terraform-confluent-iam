@@ -46,6 +46,7 @@ resource "confluent_api_key" "service-account-kafka-api-key" {
     replace_triggered_by = [ 
         time_static.rotate
     ]
+    create_before_destroy = true
   }
 } 
 
