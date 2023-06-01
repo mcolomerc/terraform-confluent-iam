@@ -15,6 +15,16 @@ resource "confluent_service_account" "sa" {
   description  = var.service_account.description
 } 
 
+resource "time_rotating" "rotate" {
+  rotation_minutes = 1
+  # rotation_days = 30
+}
+
+resource "time_static" "rotate" {
+  rfc3339 = time_rotating.rotate.rfc3339
+}
+ 
+
 resource "confluent_api_key" "service-account-kafka-api-key" {
   display_name = "${var.service_account.name}-kafka-api-key"
   description  = "Kafka API Key that is owned by ${var.service_account.name} service account"
@@ -32,6 +42,11 @@ resource "confluent_api_key" "service-account-kafka-api-key" {
     environment {
       id = data.confluent_environment.main.id
     }
+  }
+  lifecycle {
+    replace_triggered_by = [ 
+        time_static.rotate
+    ]
   }
 } 
 
