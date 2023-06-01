@@ -16,7 +16,8 @@ resource "confluent_service_account" "sa" {
 } 
 
 resource "time_rotating" "rotate" { 
-  rotation_days = var.api_key_rotate_days
+  # rotation_days = var.api_key_rotate_days
+  rotation_minutes = var.api_key_rotate_days
 }
 
 resource "time_static" "rotate" {
