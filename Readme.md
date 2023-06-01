@@ -14,6 +14,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_confluent"></a> [confluent](#provider\_confluent) | >= 1.43.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
@@ -26,6 +27,8 @@ No modules.
 | [confluent_api_key.service-account-kafka-api-key](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/api_key) | resource |
 | [confluent_role_binding.cluster_resource_rbac](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/role_binding) | resource |
 | [confluent_service_account.sa](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/service_account) | resource |
+| [time_rotating.rotate](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
+| [time_static.rotate](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/static) | resource |
 | [confluent_environment.main](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/environment) | data source |
 | [confluent_kafka_cluster.cluster](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/kafka_cluster) | data source |
 
@@ -33,6 +36,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_api_key_rotate_days"></a> [api\_key\_rotate\_days](#input\_api\_key\_rotate\_days) | API Key rotation days. Uses time\_rotating resource to trigger API Key rotation | `number` | `30` | no |
 | <a name="input_cluster"></a> [cluster](#input\_cluster) | Kafka cluster ID | `string` | n/a | yes |
 | <a name="input_confluent_cloud_api_key"></a> [confluent\_cloud\_api\_key](#input\_confluent\_cloud\_api\_key) | Confluent Cloud API KEY. export TF\_VAR\_confluent\_cloud\_api\_key="API\_KEY" | `string` | n/a | yes |
 | <a name="input_confluent_cloud_api_secret"></a> [confluent\_cloud\_api\_secret](#input\_confluent\_cloud\_api\_secret) | Confluent Cloud API KEY. export TF\_VAR\_confluent\_cloud\_api\_secret="API\_SECRET" | `string` | n/a | yes |
