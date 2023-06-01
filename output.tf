@@ -7,6 +7,8 @@ output service_account_kafka_api_key {
     sensitive = true
 }
 
-output service_account_kafka_role_bindings {
-    value = confluent_role_binding.cluster_resource_rbac.*.id
+output service_account_kafka_role_bindings { 
+  value = [
+    for rbac in confluent_role_binding.cluster_resource_rbac : rbac.id
+  ]
 }
