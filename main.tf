@@ -70,7 +70,7 @@ resource "confluent_role_binding" "cluster_resource_rbac" {
   crn_pattern = "${data.confluent_kafka_cluster.cluster.rbac_crn}/kafka=${data.confluent_kafka_cluster.cluster.id}/${each.value.resource}=${each.value.name}"
 }
 
-
+/* WIP
 module "sr_rbac" {
   for_each = {
     for index, cluster in var.schemaregistry_rbac:
@@ -82,3 +82,4 @@ module "sr_rbac" {
   service_account = confluent_service_account.sa
   sa_role_bindings = each.value.sa_role_bindings
 }
+*/
