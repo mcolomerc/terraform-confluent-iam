@@ -50,6 +50,16 @@ resource "confluent_api_key" "service-account-kafka-api-key" {
   }
 } 
 
+resource "confluent_role_binding" "cluster_admin" { 
+  for_each   = {
+    for index, rbac in var.sa_role_bindings:
+    rbac.name => rbac if rbac.role == "ClusterAdmin" 
+  }
+  principal   = "User:${confluent_service_account.sa.id}"
+  role_name   = "ClusterAdmin"
+  crn_pattern = "${data.confluent_kafka_cluster.cluster.rbac_crn}"
+}
+
 resource "confluent_role_binding" "cluster_resource_rbac" { 
   for_each   = {
     for index, rbac in var.sa_role_bindings:
