@@ -1,44 +1,47 @@
 
 # Confluent 
-environment = "env-zmz2zd"
-
-cluster = "lkc-v7omw0"
 
 service_account = {
   name        = "mcolomer-sa-tf"
   description = "Service account for Terraform"
-} 
+}
 
-sa_role_bindings = [
+roles = [
   {
-    role     = "DeveloperRead"
-    resource = "topic"
-    name     = "pageviews_en"
-  },
-  {
-    role     = "DeveloperWrite"
-    name     = "topic-from-cfk"
-    resource = "topic"
-  },
-  {
-    role     = "ResourceOwner"
-    name     = "topic1"
-    resource = "topic"
-  },
-  {
-    role     = "DeveloperWrite"
-    name     = "confluent_cli_consumer_*"
-    resource = "group"
-  },
-  {
-    role     = "DeveloperWrite"
-    name     = "my-transctional-id"
-    resource = "transactional-id"
-  },
-  {
-    role     = "DeveloperRead"
-    name     = "connector_name"
-    resource = "connector"
-  } 
+    reource = "environment"
+    name    = "Marcelo"
+    role    = "EnvironmentAdmin"
+  }
 ]
-    
+
+ 
+cluster_rbac = [
+  {
+    environment = "env-zmz2zd"
+    cluster     = "lkc-v7omw0" 
+    sa_role_bindings = [
+      {
+        role     = "DeveloperRead"
+        resource = "topic"
+        name     = "pageviews_en"
+      }
+    ]
+  }
+]
+
+schemaregistry_rbac = [
+  {
+    environment = "env-zmz2zd"
+    cluster     = "lsrc-nvmj2d" 
+    sa_role_bindings = [
+      {
+        role     = "DeveloperRead"
+        resource = "subject"
+        name     = "pageviews_en"
+      }
+    ]
+  }
+]
+
+
+

@@ -1,5 +1,6 @@
 # Confluent Cloud Service Account management
 
+Service account management for Confluent Cloud. Creates a service account, API Key and role bindings. API Key rotation is managed by a time\_rotating resource.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

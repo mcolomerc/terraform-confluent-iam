@@ -61,5 +61,14 @@ resource "confluent_role_binding" "cluster_resource_rbac" {
 }
 
 
-
- 
+module "sr_rbac" {
+  for_each = {
+    for index, cluster in var.schemaregistry_rbac:
+    rbac.cluster => rbac  
+  }
+  source = "./modules/sr_rbac"
+  schema_registry_cluster_id = each.value.cluster
+  environment = each.value.environment
+  service_account = confluent_service_account.sa
+  sa_role_bindings = each.value.sa_role_bindings
+}
