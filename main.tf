@@ -63,7 +63,7 @@ resource "confluent_role_binding" "cluster_admin" {
 resource "confluent_role_binding" "cluster_resource_rbac" { 
   for_each   = {
     for index, rbac in var.sa_role_bindings:
-    rbac.name => rbac  
+    rbac.name => rbac  if rbac.role != "ClusterAdmin"
   }
   principal   = "User:${confluent_service_account.sa.id}"
   role_name   = each.value.role
