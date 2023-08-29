@@ -11,6 +11,6 @@ output service_account_kafka_api_key {
 // Service Account Role Bindings 
 output service_account_kafka_role_bindings { 
   value = [
-    for rbac in confluent_role_binding.cluster_resource_rbac : rbac.id
+    for rbac in confluent_role_binding.cluster_resource_rbac : rbac
   ]
 }
