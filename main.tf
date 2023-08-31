@@ -10,7 +10,19 @@ data "confluent_kafka_cluster" "cluster" {
   }
 }
 
+data "confluent_service_account" "sa" {
+  display_name  = var.service_account.display_name 
+  environment {
+    id = data.confluent_environment.main.id
+  }
+}
+
+locals {
+  existing_service_account = try(data.confluent_service_account.sa.id, 0)
+}
+
 resource "confluent_service_account" "sa" {
+  count = local.existing_service_account == 0 ? 0 : 1
   display_name = var.service_account.name
   description  = var.service_account.description
 } 
