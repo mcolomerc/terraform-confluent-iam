@@ -2,6 +2,61 @@
 
 Service account management for Confluent Cloud. Creates a service account, API Key and role bindings. API Key rotation is managed by a time\_rotating resource.
 
+## Create a service account
+
+
+
+```hcl
+
+locals {
+    service_accounts = [
+        "service-account-1",
+        "service-account-2",
+        "service-account-3",
+    ]
+}
+
+module "create_service_accounts" {
+  for_each = toset(local.service_accounts)
+  source   = "github.com/mcolomerc/terraform-confluent-iam?ref=v1.0.2"
+  providers = {
+    confluent = confluent.confluent_cloud
+  }
+  environment     = var.environment
+  service_account = {
+    name = each.value
+    description = "Service Account ${each.value}"
+  }
+}
+
+```
+
+## Create role bindings for service accounts
+
+```hcl
+
+// Create Service Accounts and role bindings
+module "service_accounts" {
+  for_each =   { for sa in local.service_accounts_map : sa.index => sa } 
+  source   = "github.com/mcolomerc/terraform-confluent-iam?ref=v1.0.2"
+  providers = {
+    confluent = confluent.confluent_cloud
+  }
+  environment      = var.environment
+  cluster_role_bindings = {
+    service_account = each.value.service_account_name
+    cluster         = each.value.cluster
+    sa_role_bindings = each.value.sa_role_bindings
+  }
+  depends_on = [
+    module.create_service_accounts,
+    module.topics
+  ] 
+}
+```
+
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -15,41 +70,33 @@ Service account management for Confluent Cloud. Creates a service account, API K
 | Name | Version |
 |------|---------|
 | <a name="provider_confluent"></a> [confluent](#provider\_confluent) | >=1.51.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_sr_rbac"></a> [sr\_rbac](#module\_sr\_rbac) | ./modules/sr_rbac | n/a |
+| <a name="module_cluster_rbac"></a> [cluster\_rbac](#module\_cluster\_rbac) | ./modules/cluster_rbac | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [confluent_api_key.service-account-kafka-api-key](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/api_key) | resource |
-| [confluent_role_binding.cluster_resource_rbac](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/role_binding) | resource |
 | [confluent_service_account.sa](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/service_account) | resource |
-| [time_rotating.rotate](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
-| [time_static.rotate](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/static) | resource |
 | [confluent_environment.main](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/environment) | data source |
-| [confluent_kafka_cluster.cluster](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/kafka_cluster) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_api_key_rotate_days"></a> [api\_key\_rotate\_days](#input\_api\_key\_rotate\_days) | API Key rotation days. Uses time\_rotating resource to trigger API Key rotation | `number` | `30` | no |
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Kafka cluster ID | `string` | n/a | yes |
+| <a name="input_cluster_role_bindings"></a> [cluster\_role\_bindings](#input\_cluster\_role\_bindings) | n/a | <pre>object({ <br>    service_account = string<br>    cluster = string<br>    sa_role_bindings = list(object({<br>      role     = string<br>      resource = optional(string)<br>      name     = optional(string)<br>    })) <br>  })</pre> | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment ID | `string` | n/a | yes |
-| <a name="input_sa_role_bindings"></a> [sa\_role\_bindings](#input\_sa\_role\_bindings) | Service Account Role Bindings. List of: Role name (DeveloperRead, DeveloperWrite, ResourceOwner), resource: (topic, group or transactional-id), name: (name of the resource) | <pre>list(object({<br>      role = string<br>      resource = string   <br>      name = string<br>    }))</pre> | `[]` | no |
-| <a name="input_service_account"></a> [service\_account](#input\_service\_account) | Service account to manage | <pre>object({<br>        name = string<br>        description = string<br>    })</pre> | n/a | yes |
+| <a name="input_service_account"></a> [service\_account](#input\_service\_account) | Service account to manage | <pre>object({<br>        name = string<br>        description = string<br>    })</pre> | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | n/a |
-| <a name="output_service_account_kafka_api_key"></a> [service\_account\_kafka\_api\_key](#output\_service\_account\_kafka\_api\_key) | n/a |
-| <a name="output_service_account_kafka_role_bindings"></a> [service\_account\_kafka\_role\_bindings](#output\_service\_account\_kafka\_role\_bindings) | n/a |
+| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | Service Account |
+| <a name="output_service_account_kafka_api_key"></a> [service\_account\_kafka\_api\_key](#output\_service\_account\_kafka\_api\_key) | Service Account API/KEY |
+| <a name="output_service_account_kafka_role_bindings"></a> [service\_account\_kafka\_role\_bindings](#output\_service\_account\_kafka\_role\_bindings) | Service Account Role Bindings |
 <!-- END_TF_DOCS -->
