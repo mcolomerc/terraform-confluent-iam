@@ -5,12 +5,10 @@ output service_account {
 
 // Service Account API/KEY
 output service_account_kafka_api_key {
-    value = confluent_api_key.service-account-kafka-api-key
-    sensitive = true
+  value = length(module.cluster_rbac) > 0 ? module.cluster_rbac[0].service_account_kafka_api_key : null 
+  sensitive = true
 }
 // Service Account Role Bindings 
 output service_account_kafka_role_bindings { 
-  value = [
-    for rbac in confluent_role_binding.cluster_resource_rbac : rbac
-  ]
+  value = length(module.cluster_rbac) > 0 ? module.cluster_rbac[0].service_account_kafka_role_bindings : null 
 }
