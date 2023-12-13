@@ -1,6 +1,6 @@
 // Service Account
 output service_account {
-    value = confluent_service_account
+    value = module.service_account
 }
 
 // Service Account API/KEY
