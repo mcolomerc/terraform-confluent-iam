@@ -1,9 +1,4 @@
 
-variable "environment" {
-  type        = string
-  description = "Environment ID"
-}
-
 variable "service_account" {
   type = object({
     name        = string
@@ -13,10 +8,19 @@ variable "service_account" {
   default     = null
 }
 
+variable "environment_role_bindings" {
+  type = object({
+    service_account = string
+    environment     = string
+  })
+  default = null
+}
+
 variable "cluster_role_bindings" {
   type = object({
     service_account = string
     cluster         = string
+    environment     = string
     sa_role_bindings = list(object({
       role     = string
       resource = optional(string)

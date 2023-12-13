@@ -1,5 +1,4 @@
 # Confluent 
-environment = "env-pkojn5"
 service_account = {
   name        = "ogomez-sa-mapfre-tf"
   description = "Service account for Terraform"
