@@ -4,12 +4,12 @@ variable service_account {
 
 variable cluster {
     type = string
-    description = "Schema Registry cluster ID"
+    description = "Schema Registry cluster id"
 }
 
 variable environment {
     type = string
-    description = "Environment ID"
+    description = "Environment display name"
 } 
 
 variable sa_role_bindings {

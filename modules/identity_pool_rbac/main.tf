@@ -3,11 +3,11 @@ data "confluent_identity_provider" "idp" {
 }
 
 data "confluent_environment" "env" {
-  id = var.environment
+  display_name = var.environment
 }
 
 data "confluent_kafka_cluster" "cluster" {
-  id = var.cluster
+  display_name = var.cluster
   environment {
     id = data.confluent_environment.env.id
   }

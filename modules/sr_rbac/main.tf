@@ -1,11 +1,14 @@
- 
+data "confluent_environment" "env" {
+  display_name = var.environment
+}
+
 data "confluent_service_account" "sa" {
   display_name = var.service_account
 }
 data "confluent_schema_registry_cluster" "sr" {
   id = var.cluster
   environment {
-    id = var.environment
+    id = data.confluent_environment.env.id
   }
 }
 

@@ -1,11 +1,11 @@
 variable "environment" {
   type        = string
-  description = "Environment id"
+  description = "Environment display name"
 }
 
 variable "cluster" {
   type        = string
-  description = "Confluent cloud Kafka Cluster ID"
+  description = "Confluent cloud Kafka Cluster dispay name"
 }
 
 variable "identity_provider" {
