@@ -1,8 +1,13 @@
  
+data "confluent_environment" "environment" {
+
+  display_name = var.environment
+}
+
 data "confluent_kafka_cluster" "cluster" {
-  id = var.cluster
+  display_name = var.cluster
   environment {
-    id = var.environment
+   id = data.confluent_environment.environment.id
   }
 }
 

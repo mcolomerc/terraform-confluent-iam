@@ -10,12 +10,12 @@ variable api_key_rotate_days {
 
 variable cluster {
     type = string
-    description = "Kafka cluster ID"
+    description = "Kafka cluster display name"
 }
 
 variable environment {
     type = string
-    description = "Environment ID"
+    description = "Environment display name"
 } 
 
 variable sa_role_bindings {
