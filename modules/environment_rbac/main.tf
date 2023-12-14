@@ -1,6 +1,6 @@
  
 data "confluent_environment" "environment" {
-  id = var.environment
+  display_name = var.environment
 }
 
 data "confluent_service_account" "sa" {
