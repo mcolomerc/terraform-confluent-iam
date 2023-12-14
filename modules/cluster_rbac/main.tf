@@ -1,6 +1,5 @@
  
 data "confluent_environment" "environment" {
-
   display_name = var.environment
 }
 
@@ -38,7 +37,7 @@ resource "confluent_api_key" "service-account-kafka-api-key" {
     kind        = data.confluent_kafka_cluster.cluster.kind
 
     environment {
-      id = var.environment
+      id = data.confluent_environment.environment.id
     }
   }
   lifecycle {
