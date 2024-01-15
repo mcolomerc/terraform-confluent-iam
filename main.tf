@@ -27,3 +27,12 @@ module "sr_rbac" {
   service_account  = var.schema_registry_role_bindings.service_account
   sa_role_bindings = var.schema_registry_role_bindings.sa_role_bindings
 }
+
+module "idp_rbac" {
+  source            = "./modules/identity_pool_rbac"
+  count             = var.identity_pool_role_bindings != null ? 1 : 0
+  environment       = var.identity_pool_role_bindings.environment
+  cluster           = var.identity_pool_role_bindings.cluster
+  identity_provider = var.identity_pool_role_bindings.identity_provider
+  identity_pools    = var.identity_pool_role_bindings.identity_pools
+}

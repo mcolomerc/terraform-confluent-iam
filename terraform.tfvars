@@ -1,40 +1,40 @@
-# Confluent 
-service_account = {
-  name        = "ogomez-sa-mapfre-tf"
-  description = "Service account for Terraform"
-}
+# # Confluent 
+# service_account = {
+#   name        = "ogomez-sa-mapfre-tf"
+#   description = "Service account for Terraform"
+# }
 
-cluster_role_bindings = {
-   service_account = "CC-WEBINAR"
-    environment = "env-pkojn5"
-    cluster     = "lkc-oxnywo"
-    sa_role_bindings = [
-      {
-        role     = "DeveloperRead"
-        resource = "topic"
-        name     = "pageviews_en"
-      }
-    ]
-  }
+# cluster_role_bindings = {
+#    service_account = "CC-WEBINAR"
+#     environment = "ogomez"
+#     cluster     = "cluster_0"
+#     sa_role_bindings = [
+#       {
+#         role     = "DeveloperRead"
+#         resource = "topic"
+#         name     = "pageviews_en"
+#       }
+#     ]
+#   }
 
 
-schema_registry_role_bindings = {
-    service_account = "CC-WEBINAR"
-    environment = "env-pkojn5"
-    cluster     = "lsrc-9zrgo0"
-    sa_role_bindings = [
-      {
-        role     = "DeveloperRead"
-        resource = "subject"
-        name     = "pageviews_en"
-      }
-    ]
-  }
+# schema_registry_role_bindings = {
+#     service_account = "CC-WEBINAR"
+#     environment = "ogomez"
+#     cluster     = "lsrc-3r8pdj"
+#     sa_role_bindings = [
+#       {
+#         role     = "DeveloperRead"
+#         resource = "subject"
+#         name     = "pageviews_en"
+#       }
+#     ]
+#   }
 
 
 identity_pool_role_bindings = {
-  environment       = "env-pkojn5"
-  cluster           = "lsrc-9zrgo0"
+  environment       = "ogomez"
+  cluster           = "cluster_0"
   identity_provider = "op-q0G"
   identity_pools = [
     {
